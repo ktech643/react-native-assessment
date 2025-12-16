@@ -6,7 +6,7 @@ const users = [
   {
     id: 1,
     email: 'demo@careerontrack.ai',
-    password: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', // password: "demo123"
+    password: '$2a$10$xWuP7ulPoaXhmGFxVoLSle7GnBC0odWbG./3n14t0JvVH6yqUCHqi', // password: "demo123"
     name: 'Demo User',
     createdAt: new Date().toISOString()
   }

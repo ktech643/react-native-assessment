@@ -54,20 +54,20 @@ export default function LoginScreen() {
     // 3. Call login(email, password) from useAuth
     // 4. Show error with Alert.alert if it fails
     // 5. Set loading to false when done
-    
+
     if (!validateForm()) {
       return;
     }
 
     // Your code here:
-    // setLoading(true);
-    // try {
-    //   await login(email, password);
-    // } catch (error: any) {
-    //   Alert.alert('Login Failed', error.response?.data?.error || 'Invalid email or password');
-    // } finally {
-    //   setLoading(false);
-    // }
+    setLoading(true);
+    try {
+      await login(email, password);
+    } catch (error: any) {
+      Alert.alert('Login Failed', error.response?.data?.error || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
