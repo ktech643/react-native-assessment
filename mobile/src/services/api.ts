@@ -1,11 +1,12 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 // IMPORTANT: For Android emulator, use 'http://10.0.2.2:3000/api'
 // For iOS simulator, use 'http://localhost:3000/api'
-// For physical device, use your computer's IP address (e.g., 'http://192.168.1.100:3000/api')
-const API_BASE_URL = __DEV__ 
-  ? 'http://localhost:3000/api' 
+// For physical device, use your computer's IP address (e.g., 'http://192.168.1.148:3000/api')
+const API_BASE_URL = __DEV__
+  ? (Platform.OS === 'android' ? 'http://192.168.1.148:3000/api' : 'http://localhost:3000/api')
   : 'https://api.careerontrack.ai/api'; // Change to your production URL
 
 const api = axios.create({

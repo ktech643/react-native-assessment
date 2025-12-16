@@ -1,25 +1,34 @@
 export const colors = {
-  primary: '#007AFF',
-  secondary: '#5856D6',
-  success: '#34C759',
-  danger: '#FF3B30',
-  warning: '#FF9500',
-  info: '#5AC8FA',
-  
+  primary: '#4B9DA9', // Medium blue-teal
+  secondary: '#91C6BC', // Soft teal/mint
+  accent: '#E37434', // Warm orange
+  highlight: '#F6F3C2', // Soft yellow/cream
+
+  success: '#91C6BC',
+  danger: '#E37434',
+  warning: '#F6F3C2',
+  info: '#4B9DA9',
+
   background: '#FFFFFF',
-  surface: '#F2F2F7',
+  surface: '#F6F3C2', // Light cream background
   card: '#FFFFFF',
-  
-  text: '#000000',
+
+  text: '#1a1a1a',
   textSecondary: '#666666',
   textTertiary: '#999999',
-  
-  border: '#E5E5EA',
-  divider: '#C6C6C8',
-  
-  // Status colors
-  notStarted: '#E0E0E0',
-  inProgress: '#FFF3CD',
-  completed: '#D4EDDA',
+
+  border: '#91C6BC',
+  divider: '#4B9DA9',
+
+  // Status colors with new theme
+  notStarted: '#F6F3C2',
+  inProgress: '#91C6BC',
+  completed: '#4B9DA9',
+
+  // Additional colors for enhanced UI
+  buttonPrimary: '#4B9DA9',
+  buttonSecondary: '#91C6BC',
+  inputBackground: '#F6F3C2',
+  inputBorder: '#91C6BC',
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { colors } from '../theme/colors';
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -15,23 +16,25 @@ export default function HomeScreen() {
   );
 }
 
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
   },
   content: {
-    padding: 20,
+    padding: width * 0.05, // 5% of screen width
   },
   welcome: {
-    fontSize: 24,
+    fontSize: Math.min(width * 0.06, 24), // Responsive font size
     fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#1a1a1a',
+    marginBottom: height * 0.01, // 1% of screen height
+    color: colors.primary,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
+    color: colors.secondary,
   },
 });
 

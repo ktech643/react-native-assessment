@@ -7,6 +7,7 @@ import GoalsScreen from '../screens/GoalsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import GoalDetailScreen from '../screens/GoalDetailScreen';
 import { useAuth } from '../context/AuthContext';
+import { colors } from '../theme/colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,10 +20,52 @@ const Tab = createBottomTabNavigator();
 
 function MainTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Goals" component={GoalsScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: colors.card,
+          borderTopColor: colors.border,
+          borderTopWidth: 1,
+          paddingTop: 5,
+          paddingBottom: 5,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTintColor: colors.background,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+        }}
+      />
+      <Tab.Screen
+        name="Goals"
+        component={GoalsScreen}
+        options={{
+          tabBarLabel: 'Goals',
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Profile',
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -32,7 +75,10 @@ export default function AppNavigator() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+      key={isAuthenticated ? 'authenticated' : 'unauthenticated'}
+      screenOptions={{ headerShown: false }}
+    >
       {isAuthenticated ? (
         <>
           <Stack.Screen name="MainTabs" component={MainTabs} />

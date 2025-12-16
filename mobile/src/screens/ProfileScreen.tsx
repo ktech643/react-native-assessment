@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { userService } from '../services/api';
+import { colors } from '../theme/colors';
 
 // TODO: Task 2 - Complete Profile Screen
 // Requirements:
@@ -39,8 +41,11 @@ export default function ProfileScreen() {
       setName(profile.name);
       setEmail(profile.email);
       updateUser(profile);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to load profile');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.error ||
+                          error.message ||
+                          'Unable to load profile. Please check your internet connection.';
+      Alert.alert('Error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -54,7 +59,10 @@ export default function ProfileScreen() {
       setIsEditing(false);
       Alert.alert('Success', 'Profile updated successfully');
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.error || 'Failed to update profile');
+      const errorMessage = error.response?.data?.error ||
+                          error.message ||
+                          'Unable to update profile. Please check your internet connection.';
+      Alert.alert('Error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -80,7 +88,7 @@ export default function ProfileScreen() {
   if (loading && !user) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -167,10 +175,12 @@ export default function ProfileScreen() {
   );
 }
 
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
   },
   centerContainer: {
     flex: 1,
@@ -178,64 +188,76 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    padding: 20,
+    padding: width * 0.05, // 5% of screen width
   },
   title: {
-    fontSize: 28,
+    fontSize: Math.min(width * 0.07, 28), // Responsive font size
     fontWeight: 'bold',
-    marginBottom: 24,
-    color: '#1a1a1a',
+    marginBottom: height * 0.03, // 3% of screen height
+    color: colors.primary,
+    textAlign: 'center',
   },
   section: {
-    marginBottom: 24,
+    marginBottom: height * 0.03, // 3% of screen height
   },
   label: {
-    fontSize: 14,
+    fontSize: Math.min(width * 0.035, 14), // Responsive font size
     fontWeight: '600',
-    marginBottom: 8,
-    color: '#666',
+    marginBottom: height * 0.01, // 1% of screen height
+    color: colors.text,
   },
   value: {
-    fontSize: 16,
-    color: '#1a1a1a',
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
+    color: colors.textSecondary,
+    backgroundColor: colors.card,
+    padding: height * 0.015, // Responsive padding
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#f9f9f9',
+    borderWidth: 2,
+    borderColor: colors.inputBorder,
+    borderRadius: 12,
+    padding: height * 0.018, // Responsive padding
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
+    backgroundColor: colors.inputBackground,
+    color: colors.text,
   },
   buttonContainer: {
-    marginTop: 8,
+    marginTop: height * 0.01, // 1% of screen height
   },
   button: {
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: 12,
+    padding: height * 0.02, // Responsive padding
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: height * 0.015, // 1.5% of screen height
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
   },
   editButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.buttonPrimary,
   },
   saveButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: colors.success,
   },
   cancelButton: {
-    backgroundColor: '#8E8E93',
+    backgroundColor: colors.textTertiary,
   },
   logoutButton: {
-    backgroundColor: '#ff4444',
-    marginTop: 20,
+    backgroundColor: colors.danger,
+    marginTop: height * 0.025, // 2.5% of screen height
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: colors.background,
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
     fontWeight: '600',
   },
   logoutButtonText: {
-    color: '#fff',
+    color: colors.background,
   },
 });
 

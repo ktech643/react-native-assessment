@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
 import { goalService } from '../services/api';
+import { colors } from '../theme/colors';
 
 interface Goal {
   id: number;
@@ -44,9 +46,12 @@ export default function GoalDetailScreen({ route, navigation }: any) {
       setLoading(true);
       const data = await goalService.getGoal(goalId);
       setGoal(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading goal:', error);
-      Alert.alert('Error', 'Failed to load goal details');
+      const errorMessage = error.response?.data?.error ||
+                          error.message ||
+                          'Unable to load goal details. Please check your internet connection.';
+      Alert.alert('Error', errorMessage);
       navigation.goBack();
     } finally {
       setLoading(false);
@@ -59,8 +64,11 @@ export default function GoalDetailScreen({ route, navigation }: any) {
     try {
       const updated = await goalService.updateGoal(goal.id, { status: newStatus });
       setGoal(updated);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to update goal status');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.error ||
+                          error.message ||
+                          'Unable to update goal status. Please check your internet connection.';
+      Alert.alert('Error', errorMessage);
     }
   };
 
@@ -79,8 +87,11 @@ export default function GoalDetailScreen({ route, navigation }: any) {
             try {
               await goalService.deleteGoal(goal.id);
               navigation.goBack();
-            } catch (error) {
-              Alert.alert('Error', 'Failed to delete goal');
+            } catch (error: any) {
+              const errorMessage = error.response?.data?.error ||
+                                  error.message ||
+                                  'Unable to delete goal. Please check your internet connection.';
+              Alert.alert('Error', errorMessage);
             }
           },
         },
@@ -91,7 +102,7 @@ export default function GoalDetailScreen({ route, navigation }: any) {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -107,6 +118,9 @@ export default function GoalDetailScreen({ route, navigation }: any) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backButtonText}>← Back</Text>
+        </TouchableOpacity>
         <Text style={styles.title}>{goal.title}</Text>
         
         {goal.description && (
@@ -165,102 +179,122 @@ export default function GoalDetailScreen({ route, navigation }: any) {
   );
 }
 
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: height * 0.02, // 2% of screen height
+    paddingVertical: height * 0.01, // 1% of screen height
+    paddingHorizontal: width * 0.03, // 3% of screen width
+  },
+  backButtonText: {
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
+    fontWeight: '600',
+    color: colors.primary,
+  },
   content: {
-    padding: 20,
+    padding: width * 0.05, // 5% of screen width
   },
   title: {
-    fontSize: 24,
+    fontSize: Math.min(width * 0.06, 24), // Responsive font size
     fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#1a1a1a',
+    marginBottom: height * 0.015, // 1.5% of screen height
+    color: colors.primary,
   },
   description: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 24,
-    lineHeight: 24,
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
+    color: colors.textSecondary,
+    marginBottom: height * 0.03, // 3% of screen height
+    lineHeight: Math.min(width * 0.055, 24), // Responsive line height
   },
   section: {
-    marginBottom: 24,
+    marginBottom: height * 0.03, // 3% of screen height
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
     fontWeight: '600',
-    marginBottom: 12,
-    color: '#333',
+    marginBottom: height * 0.015, // 1.5% of screen height
+    color: colors.text,
   },
   statusContainer: {
     flexDirection: 'row',
-    gap: 8,
+    gap: width * 0.02, // 2% of screen width
   },
   statusButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#f9f9f9',
+    paddingHorizontal: width * 0.04, // 4% of screen width
+    paddingVertical: height * 0.01, // 1% of screen height
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.inputBackground,
+    flex: 1,
+    alignItems: 'center',
   },
   statusButtonActive: {
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   statusButtonText: {
-    fontSize: 14,
+    fontSize: Math.min(width * 0.035, 14), // Responsive font size
     fontWeight: '600',
     textTransform: 'capitalize',
-    color: '#666',
+    color: colors.textSecondary,
   },
   statusButtonTextActive: {
-    color: '#fff',
+    color: colors.background,
   },
   progressBar: {
-    height: 8,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 4,
+    height: height * 0.01, // 1% of screen height
+    backgroundColor: colors.notStarted,
+    borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: 8,
+    marginBottom: height * 0.01, // 1% of screen height
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.accent,
   },
   progressText: {
-    fontSize: 14,
+    fontSize: Math.min(width * 0.035, 14), // Responsive font size
     fontWeight: '600',
-    color: '#007AFF',
+    color: colors.accent,
   },
   meta: {
-    marginTop: 8,
-    paddingTop: 16,
+    marginTop: height * 0.01, // 1% of screen height
+    paddingTop: height * 0.02, // 2% of screen height
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: colors.divider,
   },
   metaText: {
-    fontSize: 12,
-    color: '#999',
-    marginBottom: 4,
+    fontSize: Math.min(width * 0.03, 12), // Responsive font size
+    color: colors.textTertiary,
+    marginBottom: height * 0.005, // 0.5% of screen height
   },
   deleteButton: {
-    marginTop: 24,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: '#ff4444',
+    marginTop: height * 0.03, // 3% of screen height
+    padding: height * 0.02, // 2% of screen height
+    borderRadius: 12,
+    backgroundColor: colors.danger,
     alignItems: 'center',
+    shadowColor: colors.danger,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   deleteButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: colors.background,
+    fontSize: Math.min(width * 0.04, 16), // Responsive font size
     fontWeight: '600',
   },
 });

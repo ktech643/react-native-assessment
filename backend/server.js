@@ -16,6 +16,20 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import goalRoutes from './routes/goals.js';
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'CareerOnTrack API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      users: '/api/users',
+      goals: '/api/goals'
+    }
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

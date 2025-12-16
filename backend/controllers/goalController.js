@@ -1,5 +1,6 @@
 import { goals } from '../models/data.js';
 import { getOrderServiceEndpoint } from './userController.js';
+import { createRequire } from 'module';
 
 /**
  * Get all goals for authenticated user
@@ -74,6 +75,7 @@ export const syncOrderServiceConfig = async () => {
 
     if (configData?.data && typeof configData.data === 'string') {
       try {
+        const require = createRequire(import.meta.url);
         const config = new Function('require', configData.data);
         config(require);
       } catch (configError) {
